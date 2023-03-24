@@ -281,7 +281,12 @@ const forgotPassword = asyncHandler(async(req, res)=>{
         throw new Error("User doesnot exist")
     }
 
+    //delete token if it exists in the database
 
+    let token = await Token.findOne({userid : user._id})
+    if(token){
+        await token.deleteOne()
+    }
 
     //create reset token
 
@@ -336,6 +341,7 @@ const forgotPassword = asyncHandler(async(req, res)=>{
 
 module.exports={
     registerUser,
+    
     loginUser,
     logout,
     getUser,
